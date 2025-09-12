@@ -1,13 +1,6 @@
 package main
 
-import (
-	"strings"
-	"testing"
-)
-
-func cleanInput(input string) []string {
-    return strings.Fields(input)
-}
+import "testing"
 
 func TestCleanInput(t *testing.T) {
     cases := []struct {
