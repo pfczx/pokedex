@@ -1,24 +1,26 @@
 package main
 
-type cliCommand struct {
-	name     string
-	desc     string
-	callback func() error
+import(
+	"fmt"
+	"os"
+
+)
+
+func commandExit() error {
+	fmt.Println("Closing the Pokedex... Goodbye!")
+	os.Exit(0)
+	return nil
 }
-
-func getCommands() map[string]cliCommand {
-	commands := map[string]cliCommand{
-		"exit": {
-			name:     "exit",
-			desc:     "exit pokedex",
-			callback: commandExit,
-		},
-		"help":{
-			name: "help",
-			desc: "print desc of cmd",
-			callback: commandHelp,
-
-		},
+func commandHelp() error {
+	fmt.Println("Welcome to the Pokedex!")
+	fmt.Println()
+	fmt.Println("Usage: ")
+	fmt.Println()
+	commands := getCommands()
+	for _, cmd := range commands {
+		fmt.Println(cmd.name + ": " + cmd.desc)
 	}
-	return commands
+	return nil
 }
+
+
