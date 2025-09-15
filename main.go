@@ -7,15 +7,6 @@ import (
 	"strings"
 )
 
-func cleanInput(input string) []string {
-	return strings.Fields(input)
-}
-
-/*
-	func getFirstWordToLower(input []string) string {
-		return strings.ToLower(input[0])
-	}
-*/
 func commandExit() error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
@@ -32,6 +23,7 @@ func commandHelp() error {
 	}
 	return nil
 }
+
 //
 
 func repl() error {
