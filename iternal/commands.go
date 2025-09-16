@@ -18,27 +18,27 @@ func CommandHelp(*Config) error {
 	fmt.Println()
 	commands := GetCommands()
 	for _, cmd := range commands {
-		fmt.Println(cmd.name + ": " + cmd.desc)
+		fmt.Println(cmd.Name + ": " + cmd.Desc)
 	}
 	return nil
 }
 func CommandMap(conf *Config) error {
 	baseUrl := "https://pokeapi.co/api/v2/location-area/?limit=20&offset="
 	currUrl := ""
-	if conf.nextUrl == "" {
+	if conf.NextUrl == "" {
 		currUrl = baseUrl + fmt.Sprintf("%d", 0)
-		conf.prevUrl = currUrl
-		conf.nextUrl = baseUrl + fmt.Sprintf("%d", 20)
-		conf.offset = 20
+		conf.PrevUrl = currUrl
+		conf.NextUrl = baseUrl + fmt.Sprintf("%d", 20)
+		conf.Offset = 20
 	} else {
-		conf.offset += 20
-		currUrl = baseUrl + fmt.Sprintf("%d", conf.offset)
-		conf.prevUrl = currUrl
-		conf.nextUrl = baseUrl + fmt.Sprintf("%d", conf.offset+20)
+		conf.Offset += 20
+		currUrl = baseUrl + fmt.Sprintf("%d", conf.Offset)
+		conf.PrevUrl = currUrl
+		conf.NextUrl = baseUrl + fmt.Sprintf("%d", conf.Offset+20)
 
 	}
-	var locations []Location
-	locations, err := HandleMap(currUrl)
+	var locations []api.Location
+	locations, err := api.HandleMap(currUrl)
 	if err != nil {
 		return err
 	}
@@ -51,16 +51,16 @@ func CommandMap(conf *Config) error {
 func CommandMapb(conf *Config) error {
 	baseUrl := "https://pokeapi.co/api/v2/location-area/?limit=20&offset="
 	currUrl := ""
-	if conf.offset == 0 {
+	if conf.Offset == 0 {
 		fmt.Println("you are on the first page")
 	} else {
-		conf.offset -= 20
-		currUrl = baseUrl + fmt.Sprintf("%d", conf.offset)
-		conf.prevUrl = currUrl
+		conf.Offset -= 20
+		currUrl = baseUrl + fmt.Sprintf("%d", conf.Offset)
+		conf.PrevUrl = currUrl
 
 	}
-	var locations []Location
-	locations, err := HandleMap(currUrl)
+	var locations []api.Location
+	locations, err := api.HandleMap(currUrl)
 	if err != nil {
 		return err
 	}

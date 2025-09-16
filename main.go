@@ -5,17 +5,19 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"github.com/pfczx/pokedex/iternal"
 )
 
 func repl() error {
-	commands := GetCommands()
+	var conf iternal.Config
+	commands := iternal.GetCommands()
 	sc := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Printf("Pokedex > ")
 		if sc.Scan() {
 			text := strings.TrimSpace(sc.Text())
 			if cmd, exists := commands[text]; exists {
-				if err := cmd.callback(); err != nil {
+				if err := cmd.Callback(&conf); err != nil {
 					return err
 				}
 

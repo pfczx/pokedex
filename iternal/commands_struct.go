@@ -1,38 +1,38 @@
 package iternal
 
 type CliCommand struct {
-	name     string
-	desc     string
-	callback func(*Config) error
+	Name     string
+	Desc     string
+	Callback func(*Config) error
 }
 type Config struct {
-	prevUrl string
-	nextUrl string
-	offset int
+	PrevUrl string
+	NextUrl string
+	Offset int
 }
 
 func GetCommands() map[string]CliCommand {
-	commands := map[string]CliCommand{
+	Commands := map[string]CliCommand{
 		"exit": {
-			name:     "exit",
-			desc:     "exit pokedex",
-			callback: CommandExit,
+			Name:     "exit",
+			Desc:     "exit pokedex",
+			Callback: CommandExit,
 		},
 		"help":{
-			name: "help",
-			desc: "print desc of cmd",
-			callback: CommandHelp,
+			Name: "help",
+			Desc: "print desc of cmd",
+			Callback: CommandHelp,
 		},
 		"map":{
-			name: "map",
-			desc: "display 0-20 locations, next call dispplay 20-40 and so on",
-			callback: CommandMap,
+			Name: "map",
+			Desc: "display 0-20 locations, next call dispplay 20-40 and so on",
+			Callback: CommandMap,
 		},
 		"mapb":{
-			name : "mapb",
-			desc: "similar to map but backwards",
-			callback: CommandMapb,
+			Name : "mapb",
+			Desc: "similar to map but backwards",
+			Callback: CommandMapb,
 		},
 	}
-	return commands
+	return Commands
 }
