@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	//"encoding/json"
@@ -14,7 +14,7 @@ type Locations struct {
 	List []Location `json:"results"`
 }
 
-func handleMap(url string) ([]Location, error) {
+func HandleMap(url string) ([]Location, error) {
 	res, errHttp := http.Get(url)
 	if errHttp != nil {
 		return nil, errHttp

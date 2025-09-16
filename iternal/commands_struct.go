@@ -1,18 +1,18 @@
-package main
+package iternal
 
-type cliCommand struct {
+type CliCommand struct {
 	name     string
 	desc     string
-	callback func(*config) error
+	callback func(*Config) error
 }
-type config struct {
+type Config struct {
 	prevUrl string
 	nextUrl string
 	offset int
 }
 
-func getCommands() map[string]cliCommand {
-	commands := map[string]cliCommand{
+func GetCommands() map[string]CliCommand {
+	commands := map[string]CliCommand{
 		"exit": {
 			name:     "exit",
 			desc:     "exit pokedex",

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"pokedex/iternal/commands"
+	"pokedex/iternal/commands_struct"
 )
 
 func repl() error {
