@@ -53,6 +53,7 @@ func CommandMapb(conf *Config) error {
 	currUrl := ""
 	if conf.Offset == 0 {
 		fmt.Println("you are on the first page")
+		return nil
 	} else {
 		conf.Offset -= 20
 		currUrl = baseUrl + fmt.Sprintf("%d", conf.Offset)

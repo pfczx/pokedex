@@ -13,7 +13,7 @@ func repl() error {
 	commands := iternal.GetCommands()
 	sc := bufio.NewScanner(os.Stdin)
 	for {
-		fmt.Printf("Pokedex > ")
+		fmt.Printf("\033[32m"+"Pokedex > "+ "\033[0m")
 		if sc.Scan() {
 			text := strings.TrimSpace(sc.Text())
 			if cmd, exists := commands[text]; exists {
