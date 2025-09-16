@@ -8,11 +8,11 @@ import (
 )
 
 func repl() error {
+	var conf config
 	commands := getCommands()
 	sc := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Printf("Pokedex > ")
-
 		if sc.Scan() {
 			text := strings.TrimSpace(sc.Text())
 			if cmd, exists := commands[text]; exists {
