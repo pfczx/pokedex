@@ -1,8 +1,6 @@
 package api
 
 import (
-	//"encoding/json"
-	//"fmt"
 	"encoding/json"
 	"net/http"
 )
@@ -28,8 +26,8 @@ func HandleMap(url string) ([]Location, error) {
 		return nil, err
 	}
 	var result []Location
-	for _,location := range locations.List {
-		result = append(result,location)
+	for _, location := range locations.List {
+		result = append(result, location)
 	}
 	return result, nil
 

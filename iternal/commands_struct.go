@@ -16,22 +16,22 @@ func GetCommands() map[string]CliCommand {
 		"exit": {
 			name:     "exit",
 			desc:     "exit pokedex",
-			callback: commandExit,
+			callback: CommandExit,
 		},
 		"help":{
 			name: "help",
 			desc: "print desc of cmd",
-			callback: commandHelp,
+			callback: CommandHelp,
 		},
 		"map":{
 			name: "map",
 			desc: "display 0-20 locations, next call dispplay 20-40 and so on",
-			callback: commandMap,
+			callback: CommandMap,
 		},
 		"mapb":{
 			name : "mapb",
 			desc: "similar to map but backwards",
-			callback: commandMapb,
+			callback: CommandMapb,
 		},
 	}
 	return commands

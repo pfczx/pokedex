@@ -48,7 +48,7 @@ func CommandMap(conf *Config) error {
 
 	return nil
 }
-func commandMapb(conf *Config) error {
+func CommandMapb(conf *Config) error {
 	baseUrl := "https://pokeapi.co/api/v2/location-area/?limit=20&offset="
 	currUrl := ""
 	if conf.offset == 0 {
