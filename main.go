@@ -17,7 +17,7 @@ func repl() error {
 		if sc.Scan() {
 			text := strings.TrimSpace(sc.Text())
 			if cmd, exists := commands[text]; exists {
-				if err := cmd.Callback(&conf); err != nil {
+				if err :=cmd.Callback(&conf); err != nil {
 					return err
 				}
 
