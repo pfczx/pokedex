@@ -8,7 +8,8 @@ import (
 )
 
 func repl() error {
-	var conf config
+	var config config
+	conf := &config	
 	commands := getCommands()
 	sc := bufio.NewScanner(os.Stdin)
 	for {
@@ -16,9 +17,10 @@ func repl() error {
 		if sc.Scan() {
 			text := strings.TrimSpace(sc.Text())
 			if cmd, exists := commands[text]; exists {
-				if err := cmd.callback(); err != nil {
+				if err := cmd.callback(conf); err != nil {
 					return err
 				}
+				
 
 			} else {
 				fmt.Println("Unknown command")

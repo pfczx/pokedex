@@ -28,6 +28,11 @@ func getCommands() map[string]cliCommand {
 			desc: "display 0-20 locations, next call dispplay 20-40 and so on",
 			callback: commandMap,
 		},
+		"mapb":{
+			name : "mapb",
+			desc: "similar to map but backwards",
+			callback: commandMapb,
+		},
 	}
 	return commands
 }

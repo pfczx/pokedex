@@ -10,13 +10,8 @@ import (
 type Location struct {
 	Name string `json:"name"`
 }
-
-type LocationWrapper struct {
-	Location Location `json:"location"`
-}
-
 type Locations struct {
-	List []LocationWrapper `json:"results"`
+	List []Location `json:"results"`
 }
 
 func handleMap(url string) ([]Location, error) {
@@ -33,8 +28,8 @@ func handleMap(url string) ([]Location, error) {
 		return nil, err
 	}
 	var result []Location
-	for _,locationWrapper := range locations.List {
-		result = append(result,locationWrapper.Location)
+	for _,location := range locations.List {
+		result = append(result,location)
 	}
 	return result, nil
 
