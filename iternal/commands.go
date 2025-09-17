@@ -2,16 +2,16 @@ package iternal
 
 import (
 	"fmt"
-	"os"
 	"github.com/pfczx/pokedex/api"
+	"os"
 )
 
-func CommandExit(*Config) error {
+func CommandExit(conf *Config, args ...string) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
-func CommandHelp(*Config) error {
+func CommandHelp(conf *Config, args ...string) error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println()
 	fmt.Println("Usage: ")
@@ -22,7 +22,7 @@ func CommandHelp(*Config) error {
 	}
 	return nil
 }
-func CommandMap(conf *Config) error {
+func CommandMap(conf *Config, args ...string) error {
 	baseUrl := "https://pokeapi.co/api/v2/location-area/?limit=20&offset="
 	currUrl := ""
 	if conf.NextUrl == "" {
@@ -48,7 +48,7 @@ func CommandMap(conf *Config) error {
 
 	return nil
 }
-func CommandMapb(conf *Config) error {
+func CommandMapb(conf *Config, args ...string) error {
 	baseUrl := "https://pokeapi.co/api/v2/location-area/?limit=20&offset="
 	currUrl := ""
 	if conf.Offset == 0 {
@@ -69,5 +69,20 @@ func CommandMapb(conf *Config) error {
 		fmt.Println(location.Name)
 	}
 
+	return nil
+}
+
+func CommandExplore(conf *Config, args ...string) error {
+	if len(args)==0{
+    return fmt.Errorf("no argument")
+	}
+	url := "https://pokeapi.co/api/v2/location-area/"+args[0]
+	pokemons, err := api.HandleExplore(url)
+	if err != nil {
+		return  err
+	}
+	for _, pokemon := range pokemons {
+		fmt.Println(" - " + pokemon.Name)
+	}
 	return nil
 }

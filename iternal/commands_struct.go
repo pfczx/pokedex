@@ -3,7 +3,7 @@ package iternal
 type CliCommand struct {
 	Name     string
 	Desc     string
-	Callback func(*Config) error
+	Callback func(*Config,...string) error
 }
 type Config struct {
 	PrevUrl string
@@ -32,6 +32,11 @@ func GetCommands() map[string]CliCommand {
 			Name : "mapb",
 			Desc: "similar to map but backwards",
 			Callback: CommandMapb,
+		},
+		"explore":{
+			Name: "explore",
+			Desc: "display pokemons in location",
+			Callback: CommandExplore,
 		},
 	}
 	return Commands
