@@ -3,8 +3,12 @@ package iternal
 import (
 	"fmt"
 	"github.com/pfczx/pokedex/api"
+	"math/rand/v2"
 	"os"
+	"strconv"
 )
+
+var catchedPokemons = make(map[string]api.Pokemon)
 
 func CommandExit(conf *Config, args ...string) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
@@ -73,16 +77,50 @@ func CommandMapb(conf *Config, args ...string) error {
 }
 
 func CommandExplore(conf *Config, args ...string) error {
-	if len(args)==0{
-    return fmt.Errorf("no argument")
+	if len(args) == 0 {
+		return fmt.Errorf("no argument")
 	}
-	url := "https://pokeapi.co/api/v2/location-area/"+args[0]
+	url := "https://pokeapi.co/api/v2/location-area/" + args[0]
 	pokemons, err := api.HandleExplore(url)
 	if err != nil {
-		return  err
+		return err
 	}
 	for _, pokemon := range pokemons {
 		fmt.Println(" - " + pokemon.Name)
+	}
+	return nil
+}
+
+func CommandCatch(conf *Config, args ...string) error {
+	url := "https://pokeapi.co/api/v2/pokemon/" + args[0]
+	pokemon, errorHandleCatch := api.HandleCatch(url)
+	if errorHandleCatch != nil {
+		return errorHandleCatch
+	}
+	fmt.Println("Throwing a Pokeball at " + args[0] + "...")
+	random := rand.IntN(pokemon.Experience)
+	if random > pokemon.Experience/2 {
+		catchedPokemons[args[0]] = pokemon
+		fmt.Println("Woo congrats u catched new pokemon!")
+	} else {
+		fmt.Println("Not this time pal...")
+	}
+	return nil
+
+}
+
+func CommandInspect(conf *Config, args ...string) error {
+	if pokemon, exists := catchedPokemons[args[0]]; exists {
+		fmt.Println("Name: " + pokemon.Name)
+		fmt.Println("Exp: " + strconv.Itoa(pokemon.Experience))
+	} else {
+		fmt.Println("I can`t find " + args[0] + " in your pokedex")
+	}
+	return nil
+}
+func CommandPokedex(conf *Config,args ...string) error{
+	for _,pokemon := range catchedPokemons{
+		fmt.Println(pokemon.Name)
 	}
 	return nil
 }

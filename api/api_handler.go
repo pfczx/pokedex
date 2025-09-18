@@ -9,6 +9,7 @@ import (
 )
 
 var cache = cashing.NewCache(1 * time.Minute)
+
 // map and mapb
 type Location struct {
 	Name string `json:"name"`
@@ -16,17 +17,19 @@ type Location struct {
 type Locations struct {
 	List []Location `json:"results"`
 }
-//explore
+
+// explore
 type PokemonEncounter struct {
-    Pokemon Pokemon `json:"pokemon"`
+	Pokemon Pokemon `json:"pokemon"`
 }
 
 type LocationArea struct {
-    PokemonEncounters []PokemonEncounter `json:"pokemon_encounters"`
+	PokemonEncounters []PokemonEncounter `json:"pokemon_encounters"`
 }
 
 type Pokemon struct {
-    Name string `json:"name"`
+	Name       string `json:"name"`
+	Experience int    `json:"base_experience"`
 }
 
 func HandleMap(url string) ([]Location, error) {
@@ -80,54 +83,83 @@ func handleCasheGetMap(data []byte) ([]Location, error) {
 
 }
 
-func HandleExplore(url string) ([]Pokemon,error){
-	if data,exists := cache.Get(url);exists{
-    res,err := handleCashGetExplore(data)
-		if err !=nil{
-			return nil,err
+func HandleExplore(url string) ([]Pokemon, error) {
+	if data, exists := cache.Get(url); exists {
+		res, err := handleCashGetExplore(data)
+		if err != nil {
+			return nil, err
 		}
-		return res,nil
+		return res, nil
 	}
 
-	res,errHttp := http.Get(url)
-	if errHttp  != nil{
-		return nil,errHttp
+	res, errHttp := http.Get(url)
+	if errHttp != nil {
+		return nil, errHttp
 	}
 	var location LocationArea
-	dc:= json.NewDecoder(res.Body)
+	dc := json.NewDecoder(res.Body)
 	errDecoder := dc.Decode(&location)
-	data,errormarshal := json.Marshal(location)
+	data, errormarshal := json.Marshal(location)
 	if errormarshal != nil {
-		return nil,errormarshal
+		return nil, errormarshal
 	}
-	cache.Add(url,data)
+	cache.Add(url, data)
 	if errDecoder != nil {
-		return nil,errDecoder
+		return nil, errDecoder
 	}
 	var pokemons []Pokemon
-	for _,pokemon := range location.PokemonEncounters{
+	for _, pokemon := range location.PokemonEncounters {
 		pokemons = append(pokemons, pokemon.Pokemon)
 	}
-	return pokemons,nil
+	return pokemons, nil
 
-	
-} 
-func handleCashGetExplore(data []byte) ([]Pokemon,error){
+}
+func handleCashGetExplore(data []byte) ([]Pokemon, error) {
 	var location LocationArea
-	err := json.Unmarshal(data,&location)
-	if err != nil{
-		return nil,err
+	err := json.Unmarshal(data, &location)
+	if err != nil {
+		return nil, err
 	}
 	var pokemons []Pokemon
-	for _,pokemon := range location.PokemonEncounters {
-		pokemons = append(pokemons,pokemon.Pokemon)
+	for _, pokemon := range location.PokemonEncounters {
+		pokemons = append(pokemons, pokemon.Pokemon)
 	}
-	return pokemons,nil
+	return pokemons, nil
 }
 
+func HandleCatch(url string) (Pokemon, error) {
+	if data, exists := cache.Get(url); exists {
+		res, err := handleCashGetCatch(data)
+		if err != nil {
+			return Pokemon{}, err
+		}
+		return res, nil
+	}
 
+	res, httpErr := http.Get(url)
+	if httpErr != nil {
+		return Pokemon{}, httpErr
+	}
+	dc := json.NewDecoder(res.Body)
+	var pokemon Pokemon
+	errDecoder := dc.Decode(&pokemon)
+	if errDecoder != nil {
+		return Pokemon{}, errDecoder
+	}
+	data, marshalErr := json.Marshal(pokemon)
+	if marshalErr != nil {
+		return Pokemon{}, marshalErr
+	}
+	cache.Add(url, data)
+	return pokemon, nil
 
+}
 
-
-
-
+func handleCashGetCatch(data []byte) (Pokemon, error) {
+	var pokemon Pokemon
+	err := json.Unmarshal(data, &pokemon)
+	if err != nil {
+		return Pokemon{}, err
+	}
+	return pokemon, nil
+}
